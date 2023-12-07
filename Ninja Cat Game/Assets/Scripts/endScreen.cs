@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 /// 10/31/23
 /// This script controls the main game scene and game over screen loading when the appropriate buttons are pressed
 /// </summary>
-public class endScreen : MonoBehaviour
+public class EndScreen : MonoBehaviour
 {
     /// <summary>
     /// Quits the game.

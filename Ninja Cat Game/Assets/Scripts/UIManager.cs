@@ -6,17 +6,20 @@ using TMPro;
 /// <summary>
 /// Morrison, Brooke
 /// Melendrez, Servando
-/// 10/23/23
+/// 12/7/23
 /// This script displays the Health on the top right hand corner of the game view
 /// </summary>
 public class UImanager : MonoBehaviour
 {
     public playerController playerController;
+    public EnemyHealth EnemyHealth;
     public TMP_Text healthDisplay;
+    public TMP_Text enemyHealthDisplay;
 
     // Update is called once per frame
     void Update()
     {
-        healthDisplay.text = "Health: " + playerController.totalHealth;
+        healthDisplay.text = "Player Health: " + playerController.totalHealth;
+        enemyHealthDisplay.text = "Enemy Health: " + playerController.maxHealth;
     }
 }
