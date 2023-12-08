@@ -24,6 +24,8 @@ public class playerController : MonoBehaviour
     private Renderer[] renderers;
     private bool isGroundedtoFloor;
     private bool isFacingLeft = false;
+    private Rigidbody rb;
+    private Camera mainCamera;
     //Shooting Variables
     public GameObject Bullet;
     public GameObject HeavyBullet;
@@ -49,6 +51,9 @@ public class playerController : MonoBehaviour
         SetRenderersVisibility(true);
         // Set canTakeDamage to true after initializing renderers
         canTakeDamage = true;
+        // Camera
+        rb = GetComponent<Rigidbody>();
+        mainCamera = Camera.main;
     }
 
 
@@ -66,31 +71,8 @@ public class playerController : MonoBehaviour
             UpdatePosition();
             timer = 0.5f;
         }
-        //side to side player movement
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            if (!isFacingLeft) // Check if the player is not already facing left
-            {
-                isFacingLeft = true;
-                RotatePlayerModel(-90f); // Rotate the player model 180 degrees on the X-axis
-
-            }
-            shootRight = false;
-            // Handle player movement to the left
-            transform.position += Vector3.left * speed * Time.deltaTime;
-        }
-        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            if (isFacingLeft) // Check if the player is not already facing right
-            {
-                isFacingLeft = false;
-                RotatePlayerModel(90f); // Rotate the player model back to its original rotation
-
-            }
-            shootRight = true;
-            // Handle player movement to the right
-            transform.position += Vector3.right * speed * Time.deltaTime;
-        }
+        //player movement
+        MovePlayer();
         if (Input.GetKeyDown(KeyCode.Space))
         {
             HandleJump();
@@ -101,6 +83,27 @@ public class playerController : MonoBehaviour
         }
         Die();
     }
+    void MovePlayer()
+    {
+        Vector3 cameraForward = mainCamera.transform.forward;
+        Vector3 cameraRight = mainCamera.transform.right;
+
+        // Ignore the vertical component to ensure the player doesn't move up or down based on camera angle
+        cameraForward.y = 0;
+        cameraRight.y = 0;
+
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        // Calculate movement direction based on camera orientation
+        Vector3 moveDirection = (cameraForward * Input.GetAxis("Vertical") + cameraRight * Input.GetAxis("Horizontal")).normalized;
+
+        // Move the player based on the calculated direction
+        rb.MovePosition(transform.position + moveDirection * speed * Time.deltaTime);
+    }
+
+
+
     /// <summary>
     /// Helps the Boss Enemys ai detect player
     /// </summary>
@@ -219,7 +222,7 @@ public class playerController : MonoBehaviour
         }
         if (other.gameObject.tag == "enemy" && canTakeDamage)
         {
-            totalHealth -= 15f;
+            totalHealth -= 1f;
             Blink();
 
         }
