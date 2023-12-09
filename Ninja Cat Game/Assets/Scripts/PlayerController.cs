@@ -113,7 +113,7 @@ public class playerController : MonoBehaviour
         // Calculate movement direction based on camera orientation
         Vector3 moveDirection = (cameraForward * Input.GetAxis("Vertical") + cameraRight * Input.GetAxis("Horizontal")).normalized;
 
-        // Move the player based on the calculated direction
+        // Move the player based on the calculated direction and deltaTime
         rb.MovePosition(transform.position + moveDirection * speed * Time.deltaTime);
     }
 
