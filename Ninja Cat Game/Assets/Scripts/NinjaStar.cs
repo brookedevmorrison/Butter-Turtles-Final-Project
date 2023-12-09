@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class NinjaStar : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public int damage = 1;
+    private bool hasDamaged = false; // Checks if damage has been applied
+
+    // Start is called on the frame when this script is enabled
     void Start()
     {
-        
+        // Destroy the ninja star after 3 seconds
+        Destroy(gameObject, 3f);
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Deals with Enemy Damage
+    /// </summary>
+    /// <param name="other"></param>
+    void OnTriggerEnter(Collider other)
     {
-        
+        if (!hasDamaged && (other.CompareTag("Enemy") || other.CompareTag("bossenemy")))
+        {
+            // Apply damage to the enemy
+            EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(damage);
+                hasDamaged = true;
+            }
+
+            // Destroy the ninja star
+            Destroy(gameObject);
+        }
     }
 }

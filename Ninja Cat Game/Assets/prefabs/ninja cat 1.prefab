@@ -165,6 +165,8 @@ MonoBehaviour:
   totalHealth: 99
   maxHealth: 99
   healthVal: 50
+  ninjaStarPrefab: {fileID: 0}
+  throwForce: 10
   Bullet: {fileID: 0}
   HeavyBullet: {fileID: 0}
   waypoint: {fileID: 8238552439843454909}
@@ -441,84 +443,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8326885856253019589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &421040695561099705
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 8326885856253019589}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.2503649
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.3799999
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.95677847
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.29081795
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 33.814
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: a6c52e26d8dffeb48b337edee4b15cde, type: 2}
-    - target: {fileID: 919132149155446097, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-      propertyPath: m_Name
-      value: ninja cat sword
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
---- !u!4 &170414635816222290 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0195981b38d53ab43b69b9bf9539a56e, type: 3}
-  m_PrefabInstance: {fileID: 421040695561099705}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5026074618333532601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -674,6 +598,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bc68fa99d7c22834596f013509a930cd, type: 3}
   m_PrefabInstance: {fileID: 5577734171238036487}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7001258866433613294
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8326885856253019589}
+    m_Modifications:
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.2503649
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.3799999
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.95677847
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.29081795
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 33.814
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511942887135672582, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+      propertyPath: m_Name
+      value: ninja cat sword
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+--- !u!4 &170414635816222290 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7166380313676751804, guid: 7964fea257bc42c43b29df357fea5784, type: 3}
+  m_PrefabInstance: {fileID: 7001258866433613294}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8941552814363999627
 PrefabInstance:

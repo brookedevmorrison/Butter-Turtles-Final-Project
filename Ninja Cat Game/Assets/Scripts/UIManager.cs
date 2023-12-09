@@ -12,14 +12,32 @@ using TMPro;
 public class UImanager : MonoBehaviour
 {
     public playerController playerController;
-    public EnemyHealth EnemyHealth;
+    public WaveSpawner wavespawner;
     public TMP_Text healthDisplay;
-    public TMP_Text enemyHealthDisplay;
+    public TMP_Text nextWaveDisplay;
 
     // Update is called once per frame
     void Update()
     {
-        healthDisplay.text = "Player Health: " + playerController.totalHealth;
-        enemyHealthDisplay.text = "Enemy Health: " + playerController.maxHealth;
+        if (playerController != null)
+        {
+            healthDisplay.text = "Player Health: " + playerController.totalHealth;
+        }
+        else
+        {
+            // Handle the case where playerController is null
+            healthDisplay.text = "Player Health: N/A";
+        }
+
+        if (wavespawner != null)
+        {
+            int scoreLeft = wavespawner.scoreToStopSpawning - wavespawner.currentScore;
+            nextWaveDisplay.text = "Next Wave: " + scoreLeft.ToString();
+        }
+        else
+        {
+            // Handle the case where wavespawner is null
+            nextWaveDisplay.text = "Next Wave: N/A";
+        }
     }
 }

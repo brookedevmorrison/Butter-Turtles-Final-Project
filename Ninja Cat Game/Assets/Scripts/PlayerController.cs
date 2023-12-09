@@ -1,37 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 /// <summary>
 /// Morrison, Brooke & Melendrez, Servando
-/// 10/31/23
-/// This script controls the full movment of the player. Also controls collisions
-/// Our Camera Follow Script is our own element
+/// 12/8/23
+/// This script controls the full movment of the player. 
 /// </summary>
 public class playerController : MonoBehaviour
 {
     public float speed = 10f;
     private Rigidbody rigidbodyRef;
     public float jumpForce = 10f;
-    public float totalHealth = 99f;
-    public float maxHealth = 99f;
+    public float totalHealth = 5f;
+    public float maxHealth = 5f;
     public float healthVal = 50f;
-    private Vector3 startPos;
-    private bool jetpackCollected = false;
-    private bool doubleJump = false;
+ 
     private bool canTakeDamage = false;
     private Renderer[] renderers;
-    private bool isGroundedtoFloor;
-    private bool isFacingLeft = false;
+  
     private Rigidbody rb;
     private Camera mainCamera;
     //Shooting Variables
-    public GameObject Bullet;
-    public GameObject HeavyBullet;
-    private bool heavybulletOn = false;
-    private bool shootRight = true;
-    private bool canShoot = true;
+    public GameObject ninjaStarPrefab;
+    public float throwForce = 10f;
+
 
     //waypoint gameobject for hard enemy script
     public GameObject waypoint;
@@ -43,8 +36,6 @@ public class playerController : MonoBehaviour
         //gets the rigidbody component off of this object and stores a reference to it
         rigidbodyRef = GetComponent<Rigidbody>();
 
-        //set the statrting position
-        startPos = transform.position;
         // Get the Renderer components of the player and its children
         renderers = GetComponentsInChildren<Renderer>();
         // Ensure that all renderers are initially visible
@@ -75,13 +66,37 @@ public class playerController : MonoBehaviour
         MovePlayer();
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            HandleJump();
-        }
-        if (Input.GetKeyDown(KeyCode.Return) && canShoot)
-        {
-            StartCoroutine(ShootWithDelay());
+            ThrowNinjaStar();
         }
         Die();
+    }
+    void ThrowNinjaStar()
+    {
+        if (ninjaStarPrefab != null && mainCamera != null)
+        {
+            // Instantiate the ninja star
+            GameObject ninjaStar = Instantiate(ninjaStarPrefab, transform.position, Quaternion.identity);
+
+            // Calculate the direction in which to throw the ninja star based on camera orientation
+            Vector3 throwDirection = mainCamera.transform.forward;
+
+            // Get the Rigidbody of the ninja star
+            Rigidbody ninjaStarRb = ninjaStar.GetComponent<Rigidbody>();
+
+            // Apply force to the thrown ninja star
+            if (ninjaStarRb != null)
+            {
+                ninjaStarRb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
+            }
+            else
+            {
+                Debug.LogWarning("Ninja star does not have a Rigidbody component.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Ninja star prefab or main camera not assigned.");
+        }
     }
     void MovePlayer()
     {
@@ -113,40 +128,12 @@ public class playerController : MonoBehaviour
         waypoint.transform.position = transform.position;
     }
 
-    /// <summary>
-    /// Spawns bullet directly from the player and destroys it after a certain amount of seconds has passed
-    /// </summary>
-    private void ShootBullet()
-    {
-        if (heavybulletOn == true)
-        {
-            GameObject bulletInstance = Instantiate(HeavyBullet, transform.position, Quaternion.Euler(0, 0, 0));
-            //bulletInstance.GetComponent<Bullet>().goingRight = shootRight;
-        }
-        else
-        {
-            GameObject bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(0, 0, 0));
-            //bulletInstance.GetComponent<Bullet>().goingRight = shootRight;
-        }
 
-    }
-    /// <summary>
-    /// Adds a delay to shooting
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator ShootWithDelay()
-    {
-        canShoot = false; // Disable shooting
-        ShootBullet();
 
-        yield return new WaitForSeconds(0.5f); // 0.5-second delay
-
-        canShoot = true; // Enable shooting after the delay
-    }
     /// <summary>
     /// Game Over when Health Drops to 0
     /// </summary>
-    private void Die()
+    public void Die()
     {
         if (totalHealth <= 0f)
         {
@@ -165,66 +152,22 @@ public class playerController : MonoBehaviour
             StartCoroutine(SetInvincibility());
         }
     }
-    // Rotate the player model on the X-axis
-    private void RotatePlayerModel(float angle)
-    {
-        Vector3 currentRotation = transform.rotation.eulerAngles;
-        currentRotation.y = angle;
-        transform.rotation = Quaternion.Euler(currentRotation);
-    }
+ 
 
     /// <summary>
     /// makes sure the player is touching the ground before they are allowed to jump
     /// </summary>
-    private void HandleJump()
-    {
-        RaycastHit Hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out Hit, 1.5f))
-        {
-            isGroundedtoFloor = true;
-            Debug.Log("single jumping");
-        }
-        else
-        {
-            isGroundedtoFloor = false;
-            Debug.Log("not grounded");
-        }
-
-        if ((Input.GetKeyDown(KeyCode.Space) && isGroundedtoFloor == true) && !jetpackCollected)
-        {
-            rigidbodyRef.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && (isGroundedtoFloor || doubleJump) && jetpackCollected)
-        {
-            rigidbodyRef.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            Debug.Log("jetpack jump " + doubleJump);
-            doubleJump = !doubleJump;
-
-        }
-    }
     /// <summary>
     /// makes stuff happen when you hit certain tagged objects
     /// </summary>
     /// <param name="other">The object that is being collided with</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "portal")
-        {
-            // move the player to the teleport point's position stored on the portal object
-           // transform.position = other.gameObject.GetComponent<portal>().teleportPoint.transform.position;
-            startPos = transform.position;
-        }
-        if (other.gameObject.tag == "jetpack")
-        {
-            jetpackCollected = true;
-            Destroy(other.gameObject);
-        }
-        if (other.gameObject.tag == "enemy" && canTakeDamage)
+
+        if (other.gameObject.tag == "Enemy" && canTakeDamage)
         {
             totalHealth -= 1f;
             Blink();
-
         }
         if (other.gameObject.tag == "bossenemy" && canTakeDamage)
         {
@@ -235,25 +178,10 @@ public class playerController : MonoBehaviour
         {
             SceneManager.LoadScene(3);
         }
-        if (other.gameObject.tag == "bulletpickup")
+        if (other.gameObject.tag == "Lava")
         {
-            heavybulletOn = true;
-            Destroy(other.gameObject);
-        }
-        if (other.gameObject.tag == "Healthpack")
-        {
-            totalHealth += healthVal;
-            if (totalHealth >= maxHealth)
-            {
-                totalHealth = maxHealth;
-            }
-            Destroy(other.gameObject);
-        }
-        if (other.gameObject.tag == "Extrahealth")
-        {
-            maxHealth = 199f;
-            totalHealth = maxHealth;
-            Destroy(other.gameObject);
+            SceneManager.LoadScene(2);  
+            Debug.Log("Game Ends");
         }
     }
     /// <summary>
